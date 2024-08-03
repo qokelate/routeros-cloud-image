@@ -4,12 +4,18 @@
 
 set -ex
 
+# 安装unzip
+which unzip || {
 apt update
 apt install -y unzip
-
+}
 
 # 下载镜像
+[ -f chr-7.15.3-auto-setup.zip ] || \
 curl -LORk 'https://github.com/qokelate/routeros-cloud-image/raw/master/chr-7.15.3-auto-setup.zip'
+
+# 解压镜像
+rm -fv chr-7.15.3.img
 unzip chr-7.15.3-auto-setup.zip
 
 # 转换镜像
@@ -36,7 +42,7 @@ gcloud compute instances create "ros-v7-15-3" \
 # gcloud compute connect-to-serial-port ros-v7-15-3
 
 # 删除镜像
+# gcloud compute images delete ros-7-15-3
 # gcloud storage rm --recursive gs://ros-7-15-3
 
 exit
-
